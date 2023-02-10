@@ -6,7 +6,7 @@ const NewsItem = (props) => {
     const newsInital = []
     const [news, setnews] = useState(newsInital);
     const getArticles = async ()=>{
-        const response = await fetch('localhost:5000/api/blogs',{method:"GET",headers:{
+        const response = await fetch('http://localhost:5000/api/blogs',{method:"GET",headers:{
             'Content-Type':'application/json',
         }    
         })
@@ -14,7 +14,7 @@ const NewsItem = (props) => {
         setnews(json)
     }
     return(
-        <NewsBox.Provider value={{news}}>
+        <NewsBox.Provider value={{news,getArticles}}>
             {props.children}
         </NewsBox.Provider>
     )

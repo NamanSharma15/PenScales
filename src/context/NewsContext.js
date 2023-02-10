@@ -1,3 +1,3 @@
 import { createContext } from "react";
-const newsBox = createContext()
-export default newsBox
+const NewsBox = createContext()
+export default NewsBox

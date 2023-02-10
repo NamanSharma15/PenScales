@@ -1,10 +1,14 @@
-import React,{useContext} from 'react'
+import React,{useContext,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import BlogBox from './BlogBox'
 import NewsContext from '../context/NewsContext';
 export const Home = (props) => {
-  const context = useContext(NewsContext);
-  const {news} = context 
+  const context = useContext(NewsContext)
+  const {news,getArticles} = context ;
+  useEffect(() => {
+    getArticles();
+  }, []);
+  console.log(news)
   return (
     <>
       <section className="py-6 sm:py-12 bg-gray-100 dark:text-gray-800">
@@ -14,7 +18,7 @@ export const Home = (props) => {
           <p className="font-serif text-sm dark:text-gray-400">Read and Share about Anything via PenScales.com</p>
         </div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
-          {news.map((news1)=>{return(<BlogBox item = {news1}/>)})}
+          {news.map((news1)=>{if(news.indexOf(news1)<8){return(<BlogBox news1 = {news1}/>)}})}
         </div>
         </div>
       </section>

@@ -18,9 +18,9 @@ router.post('/',async (req,res)=>{
 })
 router.get('/',async (req,res)=>{
     try{
+        console.log("getting blogs")
         const post  = await Post.find()
         res.json(post)
-        console.log("getting blogs")
     }
     catch(error){
         res.json({error:error})
