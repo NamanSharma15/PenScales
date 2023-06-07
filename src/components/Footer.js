@@ -1,17 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-const Footer = () => {
+const Footer = (pros) => {
   return (
-    <div>
-        <footer className="p-4 bg-white shadow md:px-6 md:py-8 dark:bg-gray-400">
+    <div className=''>
+        <footer className="p-4 bg-gray-400 shadow md:px-6 md:py-8 dark:bg-gray-400 w-full bottom-0 lg:relative fixed">
           <div className="sm:flex sm:items-center sm:justify-between">
             <Link to="/" className="flex items-center mb-4 sm:mb-0">
-              <img src="icon.png" className="h-14 mr-3 w-8" alt="Flowbite Logo" />
+              <img src={require("../icon.png")} className="h-14 mr-3 w-8" alt="Flowbite Logo" />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-gray-800">PenScales</span>
             </Link>
             <ul className="flex flex-wrap items-center mb-6 text-sm text-black sm:mb-0 dark:text-black">
               <li>
-                <Link to="#" className="mr-4 hover:underline md:mr-6 ">About</Link>
+                <Link to="/about" className="mr-4 hover:underline md:mr-6 " onClick={()=>{pros.resetPage()}}>About</Link>
               </li>
               <li>
                 <Link to="#" className="mr-4 hover:underline md:mr-6">Privacy Policy</Link>

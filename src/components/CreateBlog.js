@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
-import {Link } from 'react-router-dom'
+import {Link,useNavigate } from 'react-router-dom'
 const CreateBlog = () => {
+  const history = useNavigate()
   const [fname, setfname] = useState("");
   const [mname, setmame] = useState("");
   const [lname, setlname] = useState("");
@@ -43,6 +44,7 @@ const CreateBlog = () => {
     } catch (error) {
       console.log(error)
     } 
+    history('/')
   }
   return (
     <div className='dark:bg-gray-100'>

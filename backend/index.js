@@ -1,9 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const cors = require('cors')
 const app = express()
+const cors = require('cors')
 const BlogsP = require('./routes/blog')
+const User = require("./routes/user")
+// const password= process.env.local.dbpass
+// console.log(password)
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
@@ -11,6 +14,7 @@ app.get('/',()=>{
     console.log('Working')
 })
 app.use('/api/blogs',BlogsP)
+app.use("/api/user",User)
 app.listen(5000)
 mongoose.connect('mongodb+srv://Stakes:A12345678@glabc.unjlu.mongodb.net/PenScales?retryWrites=true&w=majority',()=>{
   console.log('connected to db')

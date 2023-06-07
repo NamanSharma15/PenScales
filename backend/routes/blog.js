@@ -26,4 +26,24 @@ router.get('/',async (req,res)=>{
         res.json({error:error})
     }
 })
+router.post('/byId/',async (req,res)=>{
+    try{
+        console.log("getting blogs by id")
+        const post  = await Post.findById(req.body._id)
+        res.json(post)
+    }
+    catch(error){
+        res.json({error:error})
+    }
+})
+router.get('/',async (req,res)=>{
+    try{
+        console.log("getting blogs")
+        const post  = await Post.find()
+        res.json(post)
+    }
+    catch(error){
+        res.json({error:error})
+    }
+})
 module.exports  = router
