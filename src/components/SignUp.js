@@ -6,7 +6,7 @@ const SignUp = () => {
   const [cradentials, setcradentials] = useState({uname:"",email:"",password:"",cpassword:""});
   const hist =     useNavigate()
   const context = useContext(NewsBox)
-  const {newUser} = context
+  const {newUser,showAlert,setVerifEmail} = context
   const onChange= (e)=>{
     setcradentials({...cradentials,[e.target.name]:e.target.value})
   }
@@ -17,9 +17,22 @@ const SignUp = () => {
       "Email":cradentials.email,
       "Password" : cradentials.password
     }
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!(re.test(cradentials.email))){
+      showAlert("Error: ","Enter a Valid Email","red")
+      return
+    }
+    if(cradentials.password.length<8){
+      showAlert("Error: ","Password is too Short","red")
+      return
+    }
+    if(cradentials.password!==cradentials.cpassword){
+      showAlert("Error: ","Passwords are not the same","red")
+      return
+    }
     console.log(user.Name)
     newUser(user)
-    alert("Account Created")
+    showAlert("Success: ","Account Created","green")
     hist("/login")
   }
   return (

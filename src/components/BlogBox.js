@@ -4,7 +4,7 @@ const BlogBox = (props) => {
   const {news1} = props
   return (
     <div>
-        <article className="flex flex-col dark:bg-gray-100 hover:bg-gray-200 border-2 rounded-md">
+        <article className="flex flex-col bg-gray-100 dark:bg-gray-100 hover:bg-gray-300 border-2 rounded-md">
             <Link rel="noopener noreferrer" aria-label="Te nulla oportere reprimique his dolorum" to={'/blog/'+news1._id}>
               <img alt="" className="object-cover w-full h-52 dark:bg-gray-500" src={require("../image1.png")} />
             </Link>

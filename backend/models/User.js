@@ -6,19 +6,31 @@ let user = mongoose.Schema({
         required:true,
         unique:true,
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    }
+    ,
     Password:{
         type:String,
         required:true,
     },
     OwnBlogs:{
-        type:Array,
+        type:[String],
         default:[]
     },
     Description:{
         type:String,
         default:"A PenScales  Reader, Contibuter and Supporter"
+    },
+    Profession:{
+        type:String,
+        default:"Blogger"
+    },
+    LikedPosts:{
+        type:[String],
+        default:[]
     }
-    
 })
 const User = mongoose.model('User',user)
 module.exports = User

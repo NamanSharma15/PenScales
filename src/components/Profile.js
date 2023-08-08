@@ -1,66 +1,84 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React,{useContext, useEffect,useState} from 'react'
+import { useParams ,Link,useNavigate} from 'react-router-dom'
+import NewsBox from '../context/NewsContext'
+import MyBlog from './MyBlog'
+import Load from './Lorder'
 const Profile = () => {
     const {uid} = useParams()
+    const host = "http://localhost:5000"
+    const [imgSrc,setimgSrc]= useState("")
+    const hist = useNavigate()
+    const context =  useContext(NewsBox)
+    const {getUser,getMyposts,resetPage,Lorder,setLorder} = context 
+    const [User, setUser] = useState({});
+    const [Posts, setPosts] = useState([]);
+    const onClick = ()=>{
+      localStorage.removeItem('token')
+      hist("/login")
+    }
+    const onClickUp = ()=>{
+      hist(`/updateprofile/${localStorage.getItem('token')}`)
+    }
+    const effect = async ()=>{
+      await getUser(localStorage.getItem('token')).then((res)=>{setUser(res)})
+      let f = await getMyposts(localStorage.getItem('token')).then((res)=>{return res})
+      setPosts(f.s)
+       const img = new Image();
+       img.src = `${host}/images/${localStorage.getItem("token")}.jpeg`;
+      let condition  = new Promise((resolve) => {
+          img.onload = () => setimgSrc(`${host}/images/${localStorage.getItem("token")}.jpeg`);
+          img.onerror = () => setimgSrc(`${host}/images/default.jpeg`);
+      });
+      setLorder(false)
+    }
+    useEffect(() => {
+      setLorder(true)
+      if(!(localStorage.getItem("token"))){
+        hist("/login")
+        resetPage()
+      }
+      effect()
+    }, [])
+    
   return (
-    <div className='py-6 sm:py-12'>
-        <div className="container mx-auto my-60">
+    <>
+    {Lorder?<Load/>:<div className='py-6 sm:py-12'>
+        <div className="container mx-auto mt-60 mb-10">
         <div>
-          <div className="bg-white relative shadow rounded-lg w-5/6 md:w-5/6  lg:w-4/6 xl:w-3/6 mx-auto">
+          <div className="bg-white relative rounded-lg w-5/6 md:w-5/6  lg:w-4/6 xl:w-3/6 mx-auto border-2 shadow border-slate-50">
             <div className="flex justify-center">
-              <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-md border-4 border-white transition duration-200 transform hover:scale-110" />
+              <img src={imgSrc} alt="" className="rounded-full mx-auto absolute -top-20 w-32 h-32 shadow-md border-4 border-white transition duration-200 transform hover:scale-110" />
             </div>
             <div className="mt-16">
-              <h1 className="font-bold text-center text-3xl text-gray-900">Pantazi Software</h1>
-              <p className="text-center text-sm text-gray-400 font-medium">UI Components Factory</p>
+              <h1 className="font-bold text-center text-3xl text-gray-900">{User.Name}</h1>
+              <p className="text-center text-sm text-gray-400 font-medium">{User.Profession}</p>
               <p>
                 <span>
                 </span>
               </p>
               <div className="my-5 px-6">
-                <Link to="#" className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Connect with <span className="font-bold">@pantazisoft</span></Link>
+                <Link to="#" className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Contact using {User.Email}</Link>
               </div>
-              <div className="flex justify-between items-center my-5 px-6">
-                <Link to ="/" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Facebook</Link>
-                <Link to ="/" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Twitter</Link>
-                <Link to ="/" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Instagram</Link>
-                <Link to ="/" className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</Link>
-              </div>
-              <div className="w-full">
-                <h3 className="font-medium text-gray-900 text-left px-6">Recent activites</h3>
-                <div className="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
-                  <Link to="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full h-6 shadow-md inline-block mr-2" />
-                    Updated his status
-                    <span className="text-gray-500 text-xs">24 min ago</span>
-                  </Link>
-                  <Link to="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full h-6 shadow-md inline-block mr-2" />
-                    Added new profile picture
-                    <span className="text-gray-500 text-xs">42 min ago</span>
-                  </Link>
-                  <Link to="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full h-6 shadow-md inline-block mr-2" />
-                    Posted new article in <span className="font-bold">#Web Dev</span>
-                    <span className="text-gray-500 text-xs">49 min ago</span>
-                  </Link>
-                  <Link to="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full h-6 shadow-md inline-block mr-2" />
-                    Edited website settings
-                    <span className="text-gray-500 text-xs">1 day ago</span>
-                  </Link>
-                  <Link to="#" className="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden">
-                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" className="rounded-full h-6 shadow-md inline-block mr-2" />
-                    Added new rank
-                    <span className="text-gray-500 text-xs">5 days ago</span>
-                  </Link>
+              <div className="w-full mt-2 ">
+                <h3 className="font-medium text-gray-900 text-left px-6">Description</h3>
+                <div className='mt-5 w-full text-gray-900 px-7'>
+                  {User.Description}
+                </div>
+                <h3 className="font-medium text-gray-900 mt-5  text-left px-6">Your Posts</h3>
+                <div className="mt-5 w-full flex flex-col overflow-hidden text-sm">{Posts.length!==0?Posts.map((post)=>{
+                 return(<MyBlog post = {post}/>)}):<div className='mx-auto'>No Posts to View</div>}
+                <div className='flex flex-row mx-auto items-center'>
+                  <button onClick={onClickUp} type='button' className='bg-green-500 rounded-lg mr-2 mt-5 px-3 py-1 text-lg text-white border-4 border-slate-200 mb-2 hover:bg-slate-600'>Update Profile</button>
+                  <button onClick={onClick} type='button' className='bg-red-500 rounded-lg ml-2 mt-5 px-3 py-1 text-lg text-white border-4 border-slate-200 mb-2 hover:bg-slate-600'>Log Out</button>
+                </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div>}
+    </>
   )
 }
 

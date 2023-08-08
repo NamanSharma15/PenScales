@@ -4,6 +4,7 @@ let blog  = mongoose.Schema({
     Email:{
         type:String,
         required:true,
+        unique:false
     },
     Title:{
         type:String,
@@ -27,7 +28,7 @@ let blog  = mongoose.Schema({
     },
     Date:{
         type:Date,
-        default:Date.now(),
+        default: Date.now(),
     }
 })
 module.exports = mongoose.model('Blogs',blog)

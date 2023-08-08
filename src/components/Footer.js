@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 const Footer = (pros) => {
   return (
     <div className=''>
-        <footer className="p-4 bg-gray-400 shadow md:px-6 md:py-8 dark:bg-gray-400 w-full bottom-0 lg:relative fixed">
+        <div className='lg:mt-0 mt-40 text-white'>
+          .
+        </div>
+        <footer className=" p-4 bg-gray-400 shadow md:px-6 md:py-8 dark:bg-gray-400 w-full bottom-0 lg:relative fixed">
           <div className="sm:flex sm:items-center sm:justify-between">
             <Link to="/" className="flex items-center mb-4 sm:mb-0">
               <img src={require("../icon.png")} className="h-14 mr-3 w-8" alt="Flowbite Logo" />

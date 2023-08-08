@@ -3,23 +3,51 @@ import { useNavigate,Link} from 'react-router-dom';
 import NewsBox from '../context/NewsContext';
 const Login = () => {
   const [cradentials, setcradentials] = useState({email:"",password:""});
-  const hist =     useNavigate()
+  const [token, settoken] = useState(null);
+  const hist = useNavigate()
   const context = useContext(NewsBox)
-  const {LoginUser,UserId,setUser} = context
+  const {LoginUser,resetPage,showAlert,Lorder,setLorder} = context
   const onChange= (e)=>{
     setcradentials({...cradentials,[e.target.name]:e.target.value})
   }
+  useEffect(()=>{
+    resetPage()
+    effect()
+  },[])
+  const effect=async()=>{
+    setLorder(true)
+    await settoken(localStorage.getItem("token"))
+    setLorder(false)
+  }
   const onClick = async (e)=>{
     e.preventDefault()
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = {
       "Email":cradentials.email,
       "Password" : cradentials.password
     }
+    if(!(re.test(cradentials.email))){
+      showAlert("Error: ","Enter a Valid Email","red")
+      return
+    }
+    if(cradentials.password.length<8){
+      showAlert("Error: ","Password is too Short","red")
+      return
+    }
+    
     const s = await LoginUser(user)
-    localStorage.setItem("token",s)
+    if(s.err!==undefined){
+      showAlert("Error: ",s.err,"red")
+      return
+    }
+    if(s.uid!==undefined){
+    localStorage.setItem("token",s.uid)
     hist("/")
+    }
   }
   return (
+    <>
+    {!token?
     <div>
                       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -54,14 +82,15 @@ const Login = () => {
                 </div>
                 <button type="submit" className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={onClick}>Sign in</button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don’t have an account yet? <Link to="signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
+                  Don’t have an account yet? <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                 </p>
               </form>
             </div>
           </div>
         </div>
       </section>
-    </div>
+    </div>:<>{hist("/")}</>}
+    </>
   )
 }
 

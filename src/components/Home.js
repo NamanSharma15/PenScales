@@ -3,12 +3,12 @@ import { Link,useNavigate} from 'react-router-dom'
 import Load from './Lorder';
 import BlogBox from './BlogBox'
 import NewsContext from '../context/NewsContext';
-import Login from './Login';
 export const Home = (props) => {
   const context = useContext(NewsContext)
-  const {news,getArticles,Lorder,setLorder} = context ;
+  const {news,getArticles,Lorder,setLorder,resetPage} = context ;
   const hist = useNavigate()
   useEffect(() => {
+    resetPage()
     setLorder(true);
     getArticles().then(()=>{setLorder(false)});
   }, []);
@@ -16,7 +16,7 @@ export const Home = (props) => {
     <>{localStorage.getItem("token")?
 
         
-          <>{Lorder ? <div><Load/></div>:       <section className="py-6 sm:py-12 bg-gray-100 dark:text-gray-800">
+          <>{Lorder ? <div><Load/></div>:       <section className="py-6 sm:py-12  dark:text-gray-800">
         <div className="container p-6 mx-auto space-y-8">
         <div className="space-y-2 text-center">
           <h2 className="text-3xl font-bold">Thought, Opinions and <br/> Knowledge</h2>

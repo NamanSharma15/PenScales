@@ -18,7 +18,6 @@ router.post('/',async (req,res)=>{
 })
 router.get('/',async (req,res)=>{
     try{
-        console.log("getting blogs")
         const post  = await Post.find()
         res.json(post)
     }
@@ -28,7 +27,6 @@ router.get('/',async (req,res)=>{
 })
 router.post('/byId/',async (req,res)=>{
     try{
-        console.log("getting blogs by id")
         const post  = await Post.findById(req.body._id)
         res.json(post)
     }
@@ -38,12 +36,19 @@ router.post('/byId/',async (req,res)=>{
 })
 router.get('/',async (req,res)=>{
     try{
-        console.log("getting blogs")
         const post  = await Post.find()
         res.json(post)
     }
     catch(error){
         res.json({error:error})
+    }
+})
+router.patch("/update",async (req,res)=>{
+    try{
+        const post = await Post.updateOne({_id:req.body.Id},req.body.query)
+        res.status(200).send({"success":true})
+    }catch(err){
+        res.status(400).send(err)
     }
 })
 module.exports  = router
