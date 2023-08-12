@@ -10,7 +10,7 @@ const NewsItem = (props) => {
     const [UserId, setUser] = useState()
     const [IsLiked, setIsLiked] = useState(0)
     const [alert, setalert] = useState(null)
-    const [verifyEmail,setVerifEmail] = useState("")
+    const [UserD,setUserD] = useState("")
     const resetPage = ()=>{
         window.scrollTo(0, 0)
     }
@@ -128,8 +128,15 @@ const NewsItem = (props) => {
             setalert(null)
         },3000)
     }
+    const getOtp=async (email)=>{
+        const response = await fetch(`http://${host}/api/user/generateOtp`,{method:"POST",headers:{
+            "Content-Type":"application/json",},body:JSON.stringify({Email:email})
+        })
+        let json = await response.json()
+        return json
+    }
         return(
-            <NewsBox.Provider value={{news,getArticles,Current,getById,resetPage,Lorder,setLorder,UserId,newUser,LoginUser,setUser,getUser,setBlogs,getMyposts,updateBlog,IsLiked,alert,setalert,showAlert,verifyEmail,setVerifEmail}}>
+            <NewsBox.Provider value={{news,getArticles,Current,getById,resetPage,Lorder,setLorder,UserId,newUser,LoginUser,setUser,getUser,setBlogs,getMyposts,updateBlog,IsLiked,alert,setalert,UserD,setUserD,showAlert,getOtp}}>
                 {props.children}
             </NewsBox.Provider>
         )

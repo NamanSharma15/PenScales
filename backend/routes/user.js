@@ -3,6 +3,9 @@ const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const Blog = require('../models/Blog')
+const nodemailer = require("nodemailer")
+const otp = require("otp-generator")
+const fs = require("fs")
 router.post("/signup",async (req,res)=>{
     const {Email} = req.body
     const find = await User.findOne({Email})
@@ -70,6 +73,45 @@ router.patch("/likePosts",async (req,res)=>{
         res.status(200).send({"success":true})
     }catch(err){
         res.status(400).send(err)
+    }
+})
+router.post("/generateOtp",async (req,res)=>{
+    try{
+        let currentOtp = otp.generate(6,{upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false});
+        const transporter = nodemailer.createTransport({
+            host:"smtp.gmail.com",
+            port:587,
+            secure:false,
+            requireTLS:true,
+            auth:{
+                user:"penscalesblogs@gmail.com",
+                pass:"xktcfcywpvxkvzal"
+            }
+        })
+        const mailConfig = {
+            from:"penscalesblogs@gmail.com",
+            to:req.body.Email,
+            subject:"Penscales Verification mail",
+            html:`<h2>Verification Mail</h2><p>To verify your Penscales account Enter the following OTP <br> <b>${currentOtp}<b><p>`
+        }
+        transporter.sendMail(mailConfig,(err,info)=>{
+            if(err){
+                console.log(err)
+                res.status(500).json({error:err})
+            }
+        })
+        res.json({otp:currentOtp})
+    }catch(err){
+        res.status(500).json({error:err})
+    }
+})
+router.delete("/deleteUser",async(req,res)=>{
+    try {
+        const user  = await User.findByIdAndDelete(req.body.uid)
+        fs.unlinkSync(`images/${req.body.uid}.jpeg`)
+        res.json({success:true})
+    } catch (error) {
+        res.status(500).json({err:error})
     }
 })
 module.exports = router

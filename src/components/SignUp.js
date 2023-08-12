@@ -6,7 +6,7 @@ const SignUp = () => {
   const [cradentials, setcradentials] = useState({uname:"",email:"",password:"",cpassword:""});
   const hist =     useNavigate()
   const context = useContext(NewsBox)
-  const {newUser,showAlert,setVerifEmail} = context
+  const {newUser,showAlert,setUserD} = context
   const onChange= (e)=>{
     setcradentials({...cradentials,[e.target.name]:e.target.value})
   }
@@ -14,7 +14,7 @@ const SignUp = () => {
     e.preventDefault()
     const user = {
       "Name":cradentials.uname,
-      "Email":cradentials.email,
+      "Email":cradentials.email.toLowerCase(),
       "Password" : cradentials.password
     }
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -31,9 +31,8 @@ const SignUp = () => {
       return
     }
     console.log(user.Name)
-    newUser(user)
-    showAlert("Success: ","Account Created","green")
-    hist("/login")
+    setUserD(user)
+    hist("/verify")
   }
   return (
     <div>

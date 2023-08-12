@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const path = require("path")
 const app = express()
+require("dotenv").config()
 app.use('/images', express.static(path.join(__dirname, 'images')));
 const cors = require('cors')
 const multer = require("multer")
@@ -31,5 +32,5 @@ app.post("/api/profile/image",upload.single("image"),(req,res)=>{
   res.send("Image Uploaded")
 })
 app.listen(5000)
-mongoose.connect('mongodb+srv://Stakes:A12345678@glabc.unjlu.mongodb.net/PenScales?retryWrites=true&w=majority',()=>{
+mongoose.connect(`${process.env.DB_PASS}`,()=>{
 })
